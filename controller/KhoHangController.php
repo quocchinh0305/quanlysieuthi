@@ -41,6 +41,9 @@ class KhoHangController {
             case 'form_xuat':
                 $this->hienThiFormXuatKho();
                 break;
+            case 'lich_su':
+                $this->lichSuKho();
+                break;
             case 'xu_ly_xuat':
                 $this->xuLyThemPhieuXuat();
                 break;
@@ -54,6 +57,13 @@ class KhoHangController {
         $danh_sach_kho = $this->khoHangModel->getDanhSachKho();
 
         require_once "../views/inventory/quan_ly_kho.php";
+    }
+
+    public function lichSuKho() {
+        $lich_su_nhap = $this->khoHangModel->getLichSuNhapKho();
+        $lich_su_xuat = $this->khoHangModel->getLichSuXuatKho();
+
+        require_once "../views/inventory/lich_su_kho.php";
     }
 
     public function hienThiFormNhapKho() {

@@ -69,6 +69,8 @@ class QuanLyDonHangController {
             $this->conn->commit();
         } catch (Exception $e) {
             $this->conn->rollback();
+            http_response_code(409);
+            exit('Không thể duyệt đơn hàng: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8'));
         }
 
         header("Location: QuanLyDonHangController.php");

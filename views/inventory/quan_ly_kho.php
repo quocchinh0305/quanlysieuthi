@@ -11,17 +11,18 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
     <h2>Quản Lý Tồn Kho & Cảnh Báo Hạn Sử Dụng (FIFO)</h2>
 
-    <?php if (isset($_GET['msg']) && $_GET['msg'] === 'nhap_thanh_cong'): ?>
+    <?php if (isset($_GET['msg']) && in_array($_GET['msg'], ['nhap_thanh_cong', 'nhap_nhieu_thanh_cong'], true)): ?>
         <p><b>Thêm phiếu nhập kho thành công!</b></p>
     <?php endif; ?>
 
-    <?php if (isset($_GET['msg']) && $_GET['msg'] === 'xuat_thanh_cong'): ?>
+    <?php if (isset($_GET['msg']) && in_array($_GET['msg'], ['xuat_thanh_cong', 'xuat_nhieu_thanh_cong'], true)): ?>
         <p><b>Lập phiếu xuất kho thành công!</b></p>
     <?php endif; ?>
 
     <p>
         <a href="/quanlysieuthi/controller/KhoHangController.php?hanh_dong=form_nhap">+ Lập Phiếu Nhập Kho</a> | 
         <a href="/quanlysieuthi/controller/KhoHangController.php?hanh_dong=form_xuat">+ Lập Phiếu Xuất Kho</a> | 
+        <a href="/quanlysieuthi/controller/KhoHangController.php?hanh_dong=lich_su">Lịch sử nhập xuất kho</a> |
         <a href="/quanlysieuthi/controller/DiemDanhController.php">Điểm Danh</a> |
         <a href="/quanlysieuthi/controller/XacThucController.php?action=logout" style="color: red;">Đăng xuất</a>
     </p>
@@ -62,7 +63,17 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
                     </td>
                     <td><?= $row['sl_kho']; ?></td>
                     <td><?= $row['sl_quay']; ?></td>
-                    <td><?= $row['trangthai']; ?></td>
+                    <td>
+                        <?php if ((int) $row['sl_kho'] < 0 || (int) $row['sl_quay'] < 0): ?>
+                            <b>Lỗi tồn kho (số lượng âm, cần kiểm kê)</b>
+                        <?php elseif ((int) $row['sl_quay'] === 0 && (int) $row['sl_kho'] > 0): ?>
+                            Hết hàng trên quầy - cần xuất lên
+                        <?php elseif ((int) $row['sl_quay'] > 0): ?>
+                            Còn hàng trên quầy
+                        <?php else: ?>
+                            Hết hàng
+                        <?php endif; ?>
+                    </td>
                 </tr>
             <?php endwhile; ?>
         <?php else: ?>

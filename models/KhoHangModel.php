@@ -14,7 +14,14 @@ class KhoHangModel {
     }
 
     public function getDanhSachKho() {
-        return $this->conn->query("SELECT k.*, sp.tensp, sp.donvi, ncc.tennhacungcap FROM kho_hang k JOIN sanpham sp ON k.id_sp = sp.id LEFT JOIN nhacungcap ncc ON sp.id_nhacungcap = ncc.id ORDER BY k.hsd ASC");
+        return $this->conn->query("
+            SELECT k.*, sp.tensp, sp.donvi, ncc.tennhacungcap
+            FROM kho_hang k
+            JOIN sanpham sp ON k.id_sp = sp.id
+            LEFT JOIN nhacungcap ncc ON sp.id_nhacungcap = ncc.id
+            WHERE k.sl_kho > 0 OR k.sl_quay > 0
+            ORDER BY k.hsd ASC
+        ");
     }
 
     public function getDanhSachNhaCungCap() {
@@ -27,6 +34,34 @@ class KhoHangModel {
 
     public function getDanhSachLoCoTheXuat() {
         return $this->conn->query("SELECT k.*, sp.tensp FROM kho_hang k JOIN sanpham sp ON k.id_sp = sp.id WHERE k.sl_kho > 0 ORDER BY k.hsd ASC");
+    }
+
+    public function getLichSuNhapKho() {
+        return $this->conn->query("
+            SELECT pn.id AS id_phieu, pn.ngaynhap, pn.tongtien, pn.ghichu,
+                ncc.tennhacungcap, nv.hoten AS ten_nhanvien,
+                ct.soluongnhap, ct.gianhap, ct.hsd, sp.tensp, sp.donvi
+            FROM phieunhap pn
+            LEFT JOIN nhacungcap ncc ON pn.id_nhacungcap = ncc.id
+            LEFT JOIN nhanvien nv ON pn.id_nhanvien = nv.id
+            LEFT JOIN chitietphieunhap ct ON pn.id = ct.id_phieu
+            LEFT JOIN sanpham sp ON ct.id_sp = sp.id
+            ORDER BY pn.ngaynhap DESC, pn.id DESC
+        ");
+    }
+
+    public function getLichSuXuatKho() {
+        return $this->conn->query("
+            SELECT px.id AS id_phieu, px.ngayxuat, px.loai_xuat, px.ghichu,
+                nv.hoten AS ten_nhanvien, ct.soluongxuat, ct.lydo,
+                kh.ma_lo, sp.tensp, sp.donvi
+            FROM phieuxuat px
+            LEFT JOIN nhanvien nv ON px.id_nhanvien = nv.id
+            LEFT JOIN chitietphieuxuat ct ON px.id = ct.id_phieu
+            LEFT JOIN kho_hang kh ON ct.id_lo = kh.id
+            LEFT JOIN sanpham sp ON kh.id_sp = sp.id
+            ORDER BY px.ngayxuat DESC, px.id DESC
+        ");
     }
 
     public function getNhanVienIdTheoTaiKhoan($idTaiKhoan) {

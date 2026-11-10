@@ -14,17 +14,17 @@ class ProductModel {
     }
 
     public function getSoLuongTon($id) {
-        $stmt = $this->conn->prepare("SELECT sl_quay, sl_kho FROM kho_hang WHERE id_sp = ?");
+        $stmt = $this->conn->prepare("
+            SELECT COALESCE(SUM(GREATEST(sl_quay, 0) + GREATEST(sl_kho, 0)), 0) AS so_luong_ton
+            FROM kho_hang
+            WHERE id_sp = ?
+        ");
         $stmt->bind_param("s", $id);
         $stmt->execute();
         $data = $stmt->get_result()->fetch_assoc();
         $stmt->close();
 
-        if (!$data) {
-            return 0;
-        }
-
-        return (int)$data['sl_quay'] + (int)$data['sl_kho'];
+        return (int) $data['so_luong_ton'];
     }
 }
 ?>
