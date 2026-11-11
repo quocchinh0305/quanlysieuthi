@@ -12,14 +12,14 @@ $tong_tien = 0;
 
     <h2>Phần Mềm Bán Hàng Tại Quầy (POS)</h2>
     <p>
-        <a href="/quanlysieuthi/controller/QuanLyDonHangController.php">Quản lý & Duyệt đơn hàng trực tuyến</a> | 
-        <a href="/quanlysieuthi/controller/BanHangController.php?hanh_dong=lich_su">Lịch sử bán hàng</a> |
+        <a href="/quanlysieuthi/controller/staff/QuanLyDonHangController.php">Quản lý & Duyệt đơn hàng trực tuyến</a> | 
+        <a href="/quanlysieuthi/controller/staff/BanHangController.php?hanh_dong=lich_su">Lịch sử bán hàng</a> |
         <a href="/quanlysieuthi/controller/DiemDanhController.php" style="font-weight: bold; color: #007bff;"> Điểm danh</a> |
         <a href="/quanlysieuthi/controller/XacThucController.php?action=logout" style="color: red;">Đăng xuất</a>
     </p>
     <hr>
     
-    <form action="/quanlysieuthi/controller/BanHangController.php?hanh_dong=them" method="POST">
+    <form action="/quanlysieuthi/controller/staff/BanHangController.php?hanh_dong=them" method="POST">
         <b>Nhập mã vạch hoặc mã sản phẩm:</b> <br>
         <input type="text" name="ma_vach" size="30" autofocus required>
         <button type="submit">Thêm vào giỏ</button>
@@ -54,12 +54,12 @@ $tong_tien = 0;
     <p><b>Tổng tiền cần thanh toán: <span style="color: red;"><?= number_format($tong_tien, 0, ',', '.'); ?>đ</span></b></p>
 
     <?php if (!empty($gio_hang_pos)): ?>
-        <p><a href="/quanlysieuthi/controller/BanHangController.php?hanh_dong=xoagio" style="color: red;">Xóa trắng hóa đơn này</a></p>
+        <p><a href="/quanlysieuthi/controller/staff/BanHangController.php?hanh_dong=xoagio" style="color: red;">Xóa trắng hóa đơn này</a></p>
     <?php endif; ?>
 
     <hr>
     <h3>Thông tin thanh toán của khách</h3>
-    <form action="/quanlysieuthi/controller/BanHangController.php?hanh_dong=thanhtoan" method="POST">
+    <form action="/quanlysieuthi/controller/staff/BanHangController.php?hanh_dong=thanhtoan" method="POST">
         <p>
             Số điện thoại khách: <br>
             <input type="text" name="sdt_khach" value="0933999888" required>
@@ -95,7 +95,7 @@ $tong_tien = 0;
                     <td><?= htmlspecialchars($sp['tensp']); ?></td>
                     <td><?= number_format($sp['giasp'], 0, ',', '.'); ?>đ</td>
                     <td>
-                        <form action="/quanlysieuthi/controller/BanHangController.php?hanh_dong=them" method="POST" style="margin:0;">
+                        <form action="/quanlysieuthi/controller/staff/BanHangController.php?hanh_dong=them" method="POST" style="margin:0;">
                             <input type="hidden" name="ma_vach" value="<?= $sp['id']; ?>">
                             <button type="submit">Chọn mua</button>
                         </form>

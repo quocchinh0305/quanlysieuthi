@@ -3,8 +3,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once "../config/database.php";
-require_once __DIR__ . "/../models/ThanhToanModel.php";
+require_once __DIR__ . "/../../config/database.php";
+require_once __DIR__ . "/../../models/customer/ThanhToanModel.php";
 
 class ThanhToanController {
     private $conn;
@@ -52,7 +52,7 @@ class ThanhToanController {
             $tong_tien += $item['giasp'] * $item['soluong'];
         }
 
-        require_once "../views/customer/thanhtoan.php";
+        require_once __DIR__ . "/../../views/customer/thanhtoan.php";
     }
 
     public function xuLyThanhToan() {
@@ -108,7 +108,7 @@ class ThanhToanController {
                 $_SESSION['last_order_id'] = $id_donhang;
                 unset($_SESSION['cart']);
 
-                header("Location: /quanlysieuthi/controller/ThanhToanController.php?action=hoan_tat");
+                header("Location: /quanlysieuthi/controller/customer/ThanhToanController.php?action=hoan_tat");
                 exit();
 
             } catch (Exception $e) {
@@ -128,7 +128,7 @@ class ThanhToanController {
         $order = $this->thanhToanModel->getDonHang($id_donhang);
         $order_items = $this->thanhToanModel->getSanPhamDonHang($id_donhang);
 
-        require_once "../views/customer/order_success.php";
+        require_once __DIR__ . "/../../views/customer/order_success.php";
     }
 
 public function lichSuDonHang() {
@@ -140,7 +140,7 @@ public function lichSuDonHang() {
 
         $result_orders = $this->thanhToanModel->getDonHangTheoKhachHang($id_khachhang);
 
-        require_once __DIR__ . "/../views/customer/lich_su_don_hang.php";
+        require_once __DIR__ . "/../../views/customer/lich_su_don_hang.php";
     }
 
     public function huyDonHang() {
@@ -158,7 +158,7 @@ public function lichSuDonHang() {
         }
 
         
-        header("Location: /quanlysieuthi/controller/ThanhToanController.php?action=lich_su");
+        header("Location: /quanlysieuthi/controller/customer/ThanhToanController.php?action=lich_su");
         exit();
     }
    public function muaLaiDonHang() {
@@ -196,7 +196,7 @@ public function lichSuDonHang() {
         }
         session_write_close();
         
-       header("Location: /quanlysieuthi/controller/CartController.php?action=index");
+       header("Location: /quanlysieuthi/controller/customer/CartController.php?action=index");
 exit();
     }
 }

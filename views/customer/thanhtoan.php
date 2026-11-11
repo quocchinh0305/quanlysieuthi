@@ -19,7 +19,7 @@ foreach ($cart as $item) {
     <h2>Trang Thanh Toán Siêu thị VQC</h2>
     <hr>
 
-    <form action="/quanlysieuthi/controller/ThanhToanController.php?action=xu_ly" method="POST">
+    <form action="/quanlysieuthi/controller/customer/ThanhToanController.php?action=xu_ly" method="POST">
         <h3>1. Thông tin người nhận</h3>
         <p>
             Họ tên người nhận: <br>
@@ -61,7 +61,7 @@ foreach ($cart as $item) {
         <p><b>Tổng số tiền cần thanh toán: <span style="color: red;"><?= number_format($tong_tien, 0, ',', '.'); ?>đ</span></b></p>
 
         <p>
-            <a href="/quanlysieuthi/controller/CartController.php?action=index">Quay lại giỏ hàng</a> | 
+            <a href="/quanlysieuthi/controller/customer/CartController.php?action=index">Quay lại giỏ hàng</a> | 
             <button type="submit">Xác nhận đặt hàng</button>
         </p>
     </form>

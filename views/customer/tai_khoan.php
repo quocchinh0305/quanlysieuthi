@@ -14,9 +14,9 @@ if (session_status() === PHP_SESSION_NONE) {
 
     <div>
         <a href="/quanlysieuthi/views/customer/dashboard.php">&larr; Quay lại trang chủ</a> | 
-        <a href="/quanlysieuthi/controller/ThanhToanController.php?action=lich_su">Lịch sử đơn hàng</a> | 
-        <a href="/quanlysieuthi/controller/ThanhToanController.php?action=index">Giỏ hàng</a> | 
-        <a href="/quanlysieuthi/controller/KhachHangController.php?action=dang_xuat" style="color: red;">Đăng xuất</a>
+        <a href="/quanlysieuthi/controller/customer/ThanhToanController.php?action=lich_su">Lịch sử đơn hàng</a> | 
+        <a href="/quanlysieuthi/controller/customer/ThanhToanController.php?action=index">Giỏ hàng</a> | 
+        <a href="/quanlysieuthi/controller/XacThucController.php?action=logout" style="color: red;">Đăng xuất</a>
     </div>
 
     <hr>
@@ -38,7 +38,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <?php endif; ?>
 
         <?php if (isset($khachhang) && $khachhang): ?>
-            <form action="/quanlysieuthi/controller/KhachHangController.php?action=update_tai_khoan" method="POST">
+            <form action="/quanlysieuthi/controller/customer/KhachHangController.php?action=update_tai_khoan" method="POST">
                 
                 <p>
                     <label><strong>Họ và tên:</strong></label><br>
@@ -73,7 +73,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <hr>
 
             <p>
-                <a href="/quanlysieuthi/controller/KhachHangController.php?action=deleteTaiKhoan" 
+                <a href="/quanlysieuthi/controller/customer/KhachHangController.php?action=deleteTaiKhoan" 
                    onclick="return confirm('CẢNH BÁO: Bạn có chắc chắn muốn xóa vĩnh viễn tài khoản này không? Mọi dữ liệu sẽ mất hoàn toàn!');"
                    style="color: red;">
                    <u>Xóa tài khoản vĩnh viễn</u>

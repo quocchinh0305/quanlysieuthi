@@ -17,26 +17,33 @@ if ($result_danhmuc) {
 
 $id_dm_chon = isset($_GET['danhmuc']) ? trim($_GET['danhmuc']) : '';
 $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+$sql_ton_kho_join = "
+    LEFT JOIN (
+        SELECT id_sp, SUM(GREATEST(sl_quay, 0) + GREATEST(sl_kho, 0)) AS so_luong_ton
+        FROM kho_hang
+        GROUP BY id_sp
+    ) ton ON ton.id_sp = sp.id
+";
 
 if (!empty($id_dm_chon)) {
     if (in_array($id_dm_chon, ['DM01', 'DM02', 'DM03', 'DM04', 'DM05'])) {
-        $stmt = $conn->prepare("SELECT sp.*, dm.tendanhmuc FROM sanpham sp JOIN danhmucsanpham dm ON sp.id_danhmuc = dm.id WHERE sp.id_danhmuc LIKE ?");
+        $stmt = $conn->prepare("SELECT sp.*, dm.tendanhmuc, COALESCE(ton.so_luong_ton, 0) AS so_luong_ton FROM sanpham sp JOIN danhmucsanpham dm ON sp.id_danhmuc = dm.id $sql_ton_kho_join WHERE sp.id_danhmuc LIKE ?");
         $like_dm = $id_dm_chon . "%";
         $stmt->bind_param("s", $like_dm);
     } else {
-        $stmt = $conn->prepare("SELECT sp.*, dm.tendanhmuc FROM sanpham sp JOIN danhmucsanpham dm ON sp.id_danhmuc = dm.id WHERE sp.id_danhmuc = ?");
+        $stmt = $conn->prepare("SELECT sp.*, dm.tendanhmuc, COALESCE(ton.so_luong_ton, 0) AS so_luong_ton FROM sanpham sp JOIN danhmucsanpham dm ON sp.id_danhmuc = dm.id $sql_ton_kho_join WHERE sp.id_danhmuc = ?");
         $stmt->bind_param("s", $id_dm_chon);
     }
     $stmt->execute();
     $result_sanpham = $stmt->get_result();
 } elseif (!empty($keyword)) {
     $searchTerm = "%" . $keyword . "%";
-    $stmt = $conn->prepare("SELECT sp.*, dm.tendanhmuc FROM sanpham sp JOIN danhmucsanpham dm ON sp.id_danhmuc = dm.id WHERE sp.tensp LIKE ?");
+    $stmt = $conn->prepare("SELECT sp.*, dm.tendanhmuc, COALESCE(ton.so_luong_ton, 0) AS so_luong_ton FROM sanpham sp JOIN danhmucsanpham dm ON sp.id_danhmuc = dm.id $sql_ton_kho_join WHERE sp.tensp LIKE ?");
     $stmt->bind_param("s", $searchTerm);
     $stmt->execute();
     $result_sanpham = $stmt->get_result();
 } else {
-    $sql_sanpham = "SELECT sp.*, dm.tendanhmuc FROM sanpham sp JOIN danhmucsanpham dm ON sp.id_danhmuc = dm.id";
+    $sql_sanpham = "SELECT sp.*, dm.tendanhmuc, COALESCE(ton.so_luong_ton, 0) AS so_luong_ton FROM sanpham sp JOIN danhmucsanpham dm ON sp.id_danhmuc = dm.id $sql_ton_kho_join";
     $result_sanpham = $conn->query($sql_sanpham);
 }
 
@@ -67,10 +74,10 @@ $ten_khachhang = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Anh c
         </form>
 
         <nav>
-            <a href="../../controller/CartController.php?action=index">Giỏ hàng (<?= $total_cart_items; ?>)</a> | 
+            <a href="../../controller/customer/CartController.php?action=index">Giỏ hàng (<?= $total_cart_items; ?>)</a> | 
             <span>Tài khoản: <?= htmlspecialchars($ten_khachhang); ?></span> | 
-            <a href="/quanlysieuthi/controller/KhachHangController.php?action=taiKhoan">Tài khoản của tôi</a> | 
-            <a href="/quanlysieuthi/controller/ThanhToanController.php?action=lich_su">Lịch sử đơn hàng</a> | 
+            <a href="/quanlysieuthi/controller/customer/KhachHangController.php?action=taiKhoan">Tài khoản của tôi</a> | 
+            <a href="/quanlysieuthi/controller/customer/ThanhToanController.php?action=lich_su">Lịch sử đơn hàng</a> | 
             <a href="../auth/login.php?action=logout">Đăng xuất</a>
         </nav>
     </header>
@@ -140,13 +147,13 @@ $ten_khachhang = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Anh c
             <p>Phân loại theo danh mục </p>
 
             <?php if(isset($_SESSION['error'])): ?>
-                <div style="color: red; font-weight: bold; margin-bottom: 10px;">
+                <div>
                     <?= $_SESSION['error']; unset($_SESSION['error']); ?>
                 </div>
             <?php endif; ?>
 
             <?php if(isset($_SESSION['success'])): ?>
-                <div style="color: green; font-weight: bold; margin-bottom: 10px;">
+                <div>
                     <?= $_SESSION['success']; unset($_SESSION['success']); ?>
                 </div>
             <?php endif; ?>
@@ -158,6 +165,7 @@ $ten_khachhang = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Anh c
                         <th>Tên sản phẩm</th>
                         <th>Mô tả</th>
                         <th>Giá tiền</th>
+                        <th>Số lượng còn</th>
                         <th>Thao tác</th>
                     </tr>
                 </thead>
@@ -171,14 +179,15 @@ $ten_khachhang = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Anh c
                                 <td>
                                     <?= number_format($sp['giasp'], 0, ',', '.'); ?>đ / <?= htmlspecialchars($sp['donvi']); ?>
                                 </td>
+                                <td><?= number_format((int) $sp['so_luong_ton'], 0, ',', '.'); ?></td>
                                 <td>
-                                    <a href="../../controller/CartController.php?action=add&id=<?= $sp['id']; ?>">Thêm vào giỏ</a>
+                                    <a href="../../controller/customer/CartController.php?action=add&id=<?= $sp['id']; ?>">Thêm vào giỏ</a>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="5" align="center">Không tìm thấy sản phẩm nào trong danh mục này.</td>
+                            <td colspan="6" align="center">Không tìm thấy sản phẩm nào trong danh mục này.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>

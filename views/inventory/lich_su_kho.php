@@ -11,30 +11,16 @@ function hienThiGiaTriKho($value) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Lịch sử nhập xuất kho</title>
-    <style>
-        body { margin: 0; padding: 24px; background: #f5f7fb; color: #253047; font: 15px Arial, sans-serif; }
-        main { max-width: 1200px; margin: 0 auto; }
-        h1 { margin-bottom: 8px; }
-        h2 { margin: 0 0 16px; }
-        section { margin-top: 24px; padding: 20px; background: #fff; border: 1px solid #e5e9f0; border-radius: 10px; }
-        .table-wrap { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 11px; border-bottom: 1px solid #eaecf0; text-align: left; vertical-align: top; }
-        th { background: #f8fafc; color: #475467; white-space: nowrap; }
-        .back { display: inline-block; margin-bottom: 18px; color: #175cd3; text-decoration: none; }
-        .empty { color: #667085; text-align: center; padding: 24px; }
-        @media (max-width: 600px) { body { padding: 16px; } section { padding: 14px; } }
-    </style>
 </head>
 <body>
 <main>
-    <a class="back" href="/quanlysieuthi/controller/KhoHangController.php">&larr; Quay lại quản lý kho</a>
+    <a href="/quanlysieuthi/controller/inventory/KhoHangController.php">&larr; Quay lại quản lý kho</a>
     <h1>Lịch sử nhập xuất kho</h1>
     <p>Theo dõi các phiếu nhập từ nhà cung cấp và phiếu xuất kho theo thời gian.</p>
 
     <section>
         <h2>Lịch sử nhập kho</h2>
-        <div class="table-wrap">
+        <div>
             <table>
                 <thead>
                     <tr>
@@ -67,7 +53,7 @@ function hienThiGiaTriKho($value) {
                             </tr>
                         <?php endwhile; ?>
                     <?php else: ?>
-                        <tr><td class="empty" colspan="10">Chưa có phiếu nhập kho.</td></tr>
+                        <tr><td colspan="10">Chưa có phiếu nhập kho.</td></tr>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -76,7 +62,7 @@ function hienThiGiaTriKho($value) {
 
     <section>
         <h2>Lịch sử xuất kho</h2>
-        <div class="table-wrap">
+        <div>
             <table>
                 <thead>
                     <tr>
@@ -114,7 +100,7 @@ function hienThiGiaTriKho($value) {
                             </tr>
                         <?php endwhile; ?>
                     <?php else: ?>
-                        <tr><td class="empty" colspan="9">Chưa có phiếu xuất kho.</td></tr>
+                        <tr><td colspan="9">Chưa có phiếu xuất kho.</td></tr>
                     <?php endif; ?>
                 </tbody>
             </table>

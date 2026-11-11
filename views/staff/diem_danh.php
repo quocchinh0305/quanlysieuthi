@@ -11,10 +11,14 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
     <h2> Điểm Danh </h2>
     <p>
-        <a href="BanHangController.php">Trang Bán Hàng (POS)</a> | 
-        <a href="QuanLyDonHangController.php">Quản Lý Đơn Hàng Online</a>
+        <a href="/quanlysieuthi/controller/staff/BanHangController.php">Trang Bán Hàng (POS)</a> | 
+        <a href="/quanlysieuthi/controller/staff/QuanLyDonHangController.php">Quản Lý Đơn Hàng Online</a>
     </p>
     <hr>
+
+    <?php if (isset($nhan_vien) && $nhan_vien): ?>
+        <p><b>Nhân viên:</b> <?= htmlspecialchars($nhan_vien['hoten'], ENT_QUOTES, 'UTF-8'); ?></p>
+    <?php endif; ?>
 
     <p>
         <a href="DiemDanhController.php?week=<?= urlencode($tuan_truoc); ?>">&larr; Tuần trước</a>

@@ -15,11 +15,17 @@ class KhoHangModel {
 
     public function getDanhSachKho() {
         return $this->conn->query("
-            SELECT k.*, sp.tensp, sp.donvi, ncc.tennhacungcap
-            FROM kho_hang k
-            JOIN sanpham sp ON k.id_sp = sp.id
-            LEFT JOIN nhacungcap ncc ON sp.id_nhacungcap = ncc.id
-            WHERE k.sl_kho > 0 OR k.sl_quay > 0
+            SELECT k.*, sp.tensp, sp.donvi, ncc.tennhacungcap,
+                   ctpn.soluongnhap
+            FROM kho_hang k 
+            JOIN sanpham sp ON k.id_sp = sp.id 
+            LEFT JOIN nhacungcap ncc ON sp.id_nhacungcap = ncc.id 
+            LEFT JOIN (
+                SELECT id_phieu, id_sp, SUM(soluongnhap) AS soluongnhap
+                FROM chitietphieunhap
+                GROUP BY id_phieu, id_sp
+            ) ctpn ON ctpn.id_phieu = k.id_phieunhap AND ctpn.id_sp = k.id_sp
+            WHERE k.sl_kho > 0 OR k.sl_quay > 0 
             ORDER BY k.hsd ASC
         ");
     }
@@ -39,28 +45,29 @@ class KhoHangModel {
     public function getLichSuNhapKho() {
         return $this->conn->query("
             SELECT pn.id AS id_phieu, pn.ngaynhap, pn.tongtien, pn.ghichu,
-                ncc.tennhacungcap, nv.hoten AS ten_nhanvien,
-                ct.soluongnhap, ct.gianhap, ct.hsd, sp.tensp, sp.donvi
+                   ncc.tennhacungcap, nv.hoten AS ten_nhanvien,
+                   ctpn.soluongnhap, ctpn.gianhap, ctpn.hsd,
+                   sp.tensp, sp.donvi
             FROM phieunhap pn
             LEFT JOIN nhacungcap ncc ON pn.id_nhacungcap = ncc.id
             LEFT JOIN nhanvien nv ON pn.id_nhanvien = nv.id
-            LEFT JOIN chitietphieunhap ct ON pn.id = ct.id_phieu
-            LEFT JOIN sanpham sp ON ct.id_sp = sp.id
-            ORDER BY pn.ngaynhap DESC, pn.id DESC
+            LEFT JOIN chitietphieunhap ctpn ON ctpn.id_phieu = pn.id
+            LEFT JOIN sanpham sp ON sp.id = ctpn.id_sp
+            ORDER BY pn.ngaynhap DESC, pn.id DESC, sp.tensp ASC
         ");
     }
 
     public function getLichSuXuatKho() {
         return $this->conn->query("
             SELECT px.id AS id_phieu, px.ngayxuat, px.loai_xuat, px.ghichu,
-                nv.hoten AS ten_nhanvien, ct.soluongxuat, ct.lydo,
-                kh.ma_lo, sp.tensp, sp.donvi
+                   nv.hoten AS ten_nhanvien, ctpx.soluongxuat, ctpx.lydo,
+                   kh.ma_lo, sp.tensp, sp.donvi
             FROM phieuxuat px
             LEFT JOIN nhanvien nv ON px.id_nhanvien = nv.id
-            LEFT JOIN chitietphieuxuat ct ON px.id = ct.id_phieu
-            LEFT JOIN kho_hang kh ON ct.id_lo = kh.id
-            LEFT JOIN sanpham sp ON kh.id_sp = sp.id
-            ORDER BY px.ngayxuat DESC, px.id DESC
+            LEFT JOIN chitietphieuxuat ctpx ON ctpx.id_phieu = px.id
+            LEFT JOIN kho_hang kh ON kh.id = ctpx.id_lo
+            LEFT JOIN sanpham sp ON sp.id = kh.id_sp
+            ORDER BY px.ngayxuat DESC, px.id DESC, sp.tensp ASC
         ");
     }
 
@@ -75,7 +82,7 @@ class KhoHangModel {
         $stmt = $this->conn->prepare("INSERT INTO phieunhap (id_nhacungcap, id_nhanvien, ngaynhap, tongtien, ghichu) VALUES (?, ?, NOW(), ?, ?)");
         $stmt->bind_param("ssds", $idNhaCungCap, $idNhanVien, $tongTien, $ghiChu);
         $stmt->execute();
-        return $this->conn->insert_id;
+        return $stmt->conn->insert_id;
     }
 
     public function themChiTietPhieuNhap($idPhieu, $idSanPham, $soLuong, $giaNhap, $hsd) {
@@ -94,7 +101,7 @@ class KhoHangModel {
         $stmt = $this->conn->prepare("INSERT INTO phieuxuat (id_nhanvien, ngayxuat, loai_xuat, ghichu) VALUES (?, NOW(), ?, ?)");
         $stmt->bind_param("sss", $idNhanVien, $loaiXuat, $ghiChu);
         $stmt->execute();
-        return $this->conn->insert_id;
+        return $stmt->conn->insert_id;
     }
 
     public function getSoLuongTonLo($idLo) {

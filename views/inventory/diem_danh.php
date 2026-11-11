@@ -1,6 +1,5 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
-$current_week = isset($_GET['week']) ? intval($_GET['week']) : 0;
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -12,17 +11,18 @@ $current_week = isset($_GET['week']) ? intval($_GET['week']) : 0;
 
     <h2>Điểm Danh & Lịch Làm Việc Thủ Kho</h2>
     <p>
-        <a href="/quanlysieuthi/controller/KhoHangController.php">Quản Lý Kho Hàng</a>
+        <a href="/quanlysieuthi/controller/inventory/KhoHangController.php">Quản Lý Kho Hàng</a>
     </p>
     <hr>
 
     <p>
-        <a href="DiemDanhController.php?week=<?= $current_week - 1; ?>">&larr; Tuần trước</a> | 
-        <a href="DiemDanhController.php">Tuần này</a> | 
-        <a href="DiemDanhController.php?week=<?= $current_week + 1; ?>">Tuần sau &rarr;</a>
+        <a href="DiemDanhController.php?week=<?= urlencode($tuan_truoc); ?>">&larr; Tuần trước</a> |
+        <strong>Tuần <?= htmlspecialchars($week_start->format('d/m/Y')); ?> - <?= htmlspecialchars($week_end->format('d/m/Y')); ?></strong> |
+        <a href="DiemDanhController.php?week=<?= urlencode($tuan_sau); ?>">Tuần sau &rarr;</a>
+        <?php if ($ngay_bat_dau !== $tuan_hien_tai): ?>
+            | <a href="DiemDanhController.php?week=<?= urlencode($tuan_hien_tai); ?>">Tuần hiện tại</a>
+        <?php endif; ?>
     </p>
-
-    <p><b>Khoảng thời gian:</b> <?= $week_start->format('d/m/Y'); ?> - <?= $week_end->format('d/m/Y'); ?></p>
 
     <?php if (isset($nhan_vien) && $nhan_vien): ?>
         <p><b>Thủ kho:</b> <?= htmlspecialchars($nhan_vien['hoten']); ?> (<?= htmlspecialchars($nhan_vien['chucvu']); ?>)</p>

@@ -78,11 +78,11 @@ elseif ($hanhDong == 'login') {
                     exit();
 
                 case 'staff':
-                    header("Location: BanHangController.php");
+                    header("Location: staff/BanHangController.php");
                     exit();
 
                 case 'storekeeper':
-                    header("Location: KhoHangController.php");
+                    header("Location: inventory/KhoHangController.php");
                     exit();
 
                 case 'customer':

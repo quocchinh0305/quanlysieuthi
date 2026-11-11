@@ -11,7 +11,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 <body>
 
     <h2>Quản Lý & Duyệt Đơn Hàng Trực Tuyến</h2>
-    <p><a href="BanHangController.php">Quay lại màn hình bán hàng POS</a></p>
+    <p><a href="/quanlysieuthi/controller/staff/BanHangController.php">Quay lại màn hình bán hàng POS</a></p>
     <hr>
 
     <table border="1" cellpadding="8" cellspacing="0">
@@ -35,7 +35,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
                 <td style="color: red;"><?= number_format($row['thucthu'], 0, ',', '.'); ?>đ</td>
                 <td><?= $row['phuongthuc_thanhtoan'] == 'chuyenkhoan' ? 'Chuyển khoản' : 'Tiền mặt (COD)'; ?></td>
                 <td>
-                    <form action="QuanLyDonHangController.php?hanh_dong=cap_nhat_thanh_toan" method="POST">
+                    <form action="/quanlysieuthi/controller/staff/QuanLyDonHangController.php?hanh_dong=cap_nhat_thanh_toan" method="POST">
                         <input type="hidden" name="id" value="<?= htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>">
                         <select name="trangthai_thanhtoan" aria-label="Trạng thái thanh toán đơn <?= htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'); ?>">
                             <option value="chuathanhtoan" <?= $row['trangthai_thanhtoan'] === 'chuathanhtoan' ? 'selected' : ''; ?>>Chưa thanh toán</option>
@@ -57,8 +57,8 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
                 </td>
                 <td>
                     <?php if ($row['trangthai_donhang'] === 'choxacnhan'): ?>
-                        <a href="QuanLyDonHangController.php?hanh_dong=duyet&id=<?= $row['id']; ?>" style="color: green; font-weight: bold;">Duyệt đơn</a> | 
-                        <a href="QuanLyDonHangController.php?hanh_dong=huy&id=<?= $row['id']; ?>" style="color: red;" onclick="return confirm('Bạn có chắc muốn hủy đơn này không?');">Hủy</a>
+                        <a href="/quanlysieuthi/controller/staff/QuanLyDonHangController.php?hanh_dong=duyet&id=<?= $row['id']; ?>" style="color: green; font-weight: bold;">Duyệt đơn</a> | 
+                        <a href="/quanlysieuthi/controller/staff/QuanLyDonHangController.php?hanh_dong=huy&id=<?= $row['id']; ?>" style="color: red;" onclick="return confirm('Bạn có chắc muốn hủy đơn này không?');">Hủy</a>
                     <?php else: ?>
                         <span>Đã xử lý xong</span>
                     <?php endif; ?>

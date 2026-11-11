@@ -10,10 +10,10 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 <body>
 
     <h2>Lập Phiếu Nhập Kho (Nhiều Sản Phẩm)</h2>
-    <p><a href="/quanlysieuthi/controller/KhoHangController.php">&larr; Quay lại danh sách kho</a></p>
+    <p><a href="/quanlysieuthi/controller/inventory/KhoHangController.php">&larr; Quay lại danh sách kho</a></p>
     <hr>
 
-    <form action="/quanlysieuthi/controller/KhoHangController.php?hanh_dong=xu_ly_nhap" method="POST">
+    <form action="/quanlysieuthi/controller/inventory/KhoHangController.php?hanh_dong=xu_ly_nhap" method="POST">
         <p>
             <label><b>Nhà cung cấp:</b></label><br>
             <select name="id_nhacungcap" required style="padding: 5px; width: 300px;">

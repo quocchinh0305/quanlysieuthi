@@ -4,8 +4,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once __DIR__ . "/../config/database.php";
-require_once __DIR__ . "/../models/ProductModel.php";
+require_once __DIR__ . "/../../config/database.php";
+require_once __DIR__ . "/../../models/customer/ProductModel.php";
 
 class CartController {
     private $productModel;
@@ -44,7 +44,7 @@ class CartController {
             $tong_tien += $item['giasp'] * $item['soluong'];
         }
 
-        require_once __DIR__ . "/../views/customer/cart.php";
+        require_once __DIR__ . "/../../views/customer/cart.php";
     }
 
     public function add() {
@@ -131,7 +131,7 @@ class CartController {
             }
         }
 
-        header("Location: /quanlysieuthi/controller/CartController.php?action=index");
+        header("Location: /quanlysieuthi/controller/customer/CartController.php?action=index");
         exit();
     }
 
@@ -143,7 +143,7 @@ class CartController {
             $_SESSION['success'] = "Đã xóa sản phẩm khỏi giỏ hàng!";
         }
 
-        header("Location: /quanlysieuthi/controller/CartController.php?action=index");
+        header("Location: /quanlysieuthi/controller/customer/CartController.php?action=index");
         exit();
     }
 }

@@ -3,8 +3,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once "../config/database.php";
-require_once __DIR__ . "/../models/KhoHangModel.php";
+require_once __DIR__ . "/../../config/database.php";
+require_once __DIR__ . "/../../models/inventory/KhoHangModel.php";
 
 class KhoHangController {
     private $conn;
@@ -23,7 +23,7 @@ class KhoHangController {
         $nv = $this->khoHangModel->getChucVuNhanVien($current_user_id);
 
         if ($role !== 'admin' && $role !== 'storekeeper' && (!$nv || strpos($nv['chucvu'], 'thủ kho') === false)) {
-            echo "<script>alert('Bạn không có quyền truy cập phân hệ kho!'); window.location='DiemDanhController.php';</script>";
+            echo "<script>alert('Bạn không có quyền truy cập phân hệ kho!'); window.location='/quanlysieuthi/controller/DiemDanhController.php';</script>";
             exit();
         }
     }
@@ -56,20 +56,20 @@ class KhoHangController {
     public function danhSachKho() {
         $danh_sach_kho = $this->khoHangModel->getDanhSachKho();
 
-        require_once "../views/inventory/quan_ly_kho.php";
+        require_once __DIR__ . "/../../views/inventory/quan_ly_kho.php";
     }
 
     public function lichSuKho() {
         $lich_su_nhap = $this->khoHangModel->getLichSuNhapKho();
         $lich_su_xuat = $this->khoHangModel->getLichSuXuatKho();
 
-        require_once "../views/inventory/lich_su_kho.php";
+        require_once __DIR__ . "/../../views/inventory/lich_su_kho.php";
     }
 
     public function hienThiFormNhapKho() {
         $ds_ncc = $this->khoHangModel->getDanhSachNhaCungCap();
         $ds_sp = $this->khoHangModel->getDanhSachSanPham();
-        require_once "../views/inventory/lap_phieu_nhap.php";
+        require_once __DIR__ . "/../../views/inventory/lap_phieu_nhap.php";
     }
 
    public function xuLyThemPhieuNhap() {
@@ -124,7 +124,7 @@ class KhoHangController {
 
     public function hienThiFormXuatKho() {
         $ds_kho = $this->khoHangModel->getDanhSachLoCoTheXuat();
-        require_once "../views/inventory/lap_phieu_xuat.php";
+        require_once __DIR__ . "/../../views/inventory/lap_phieu_xuat.php";
     }
 
    public function xuLyThemPhieuXuat() {

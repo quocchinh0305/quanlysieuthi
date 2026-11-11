@@ -3,8 +3,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once "../config/database.php";
-require_once __DIR__ . "/../models/QuanLyDonHangModel.php";
+require_once __DIR__ . "/../../config/database.php";
+require_once __DIR__ . "/../../models/staff/QuanLyDonHangModel.php";
 
 class QuanLyDonHangController {
     private $conn;
@@ -37,7 +37,7 @@ class QuanLyDonHangController {
 
     public function danhSach() {
         $danh_sach_don = $this->donHangModel->getDonChoXacNhan();
-        require_once "../views/staff/quan_ly_don_hang.php";
+        require_once __DIR__ . "/../../views/staff/quan_ly_don_hang.php";
     }
 
     public function duyetDon($id) {

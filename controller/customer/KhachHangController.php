@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../models/KhachHangModel.php";
+require_once __DIR__ . "/../../models/customer/KhachHangModel.php";
 
 class KhachHangController {
     private $khachHangModel;
@@ -21,7 +21,7 @@ class KhachHangController {
 
         $khachhang = $this->khachHangModel->getThongTinKhachHang($id_khachhang);
 
-        require_once __DIR__ . "/../views/customer/tai_khoan.php";
+        require_once __DIR__ . "/../../views/customer/tai_khoan.php";
     }
 
     public function updateTaiKhoan() {
@@ -46,7 +46,7 @@ class KhachHangController {
                 $_SESSION['error_msg'] = "Cập nhật thất bại, vui lòng thử lại!";
             }
 
-            header("Location: /quanlysieuthi/controller/KhachHangController.php?action=tai_khoan");
+            header("Location: /quanlysieuthi/controller/customer/KhachHangController.php?action=tai_khoan");
             exit();
         }
     }
@@ -72,7 +72,7 @@ class KhachHangController {
     }
 }
 
-require_once __DIR__ . "/../config/database.php"; 
+require_once __DIR__ . "/../../config/database.php"; 
 
 $controller = new KhachHangController($conn);
 $action = isset($_GET['action']) ? $_GET['action'] : 'taiKhoan';

@@ -20,9 +20,9 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
     <?php endif; ?>
 
     <p>
-        <a href="/quanlysieuthi/controller/KhoHangController.php?hanh_dong=form_nhap">+ Lập Phiếu Nhập Kho</a> | 
-        <a href="/quanlysieuthi/controller/KhoHangController.php?hanh_dong=form_xuat">+ Lập Phiếu Xuất Kho</a> | 
-        <a href="/quanlysieuthi/controller/KhoHangController.php?hanh_dong=lich_su">Lịch sử nhập xuất kho</a> |
+        <a href="/quanlysieuthi/controller/inventory/KhoHangController.php?hanh_dong=form_nhap">+ Lập Phiếu Nhập Kho</a> | 
+        <a href="/quanlysieuthi/controller/inventory/KhoHangController.php?hanh_dong=form_xuat">+ Lập Phiếu Xuất Kho</a> | 
+        <a href="/quanlysieuthi/controller/inventory/KhoHangController.php?hanh_dong=lich_su">Lịch sử nhập xuất kho</a> |
         <a href="/quanlysieuthi/controller/DiemDanhController.php">Điểm Danh</a> |
         <a href="/quanlysieuthi/controller/XacThucController.php?action=logout" style="color: red;">Đăng xuất</a>
     </p>
@@ -36,6 +36,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
             <th>Nhà cung cấp</th>
             <th>Giá nhập</th>
             <th>Hạn sử dụng (HSD)</th>
+            <th>Số lượng nhập</th>
             <th>Tồn kho</th>
             <th>Tồn quầy</th>
             <th>Trạng thái</th>
@@ -61,6 +62,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
                             }
                         ?>
                     </td>
+                    <td><?= isset($row['soluongnhap']) ? number_format((int) $row['soluongnhap'], 0, ',', '.') : '—'; ?></td>
                     <td><?= $row['sl_kho']; ?></td>
                     <td><?= $row['sl_quay']; ?></td>
                     <td>
@@ -78,7 +80,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
             <?php endwhile; ?>
         <?php else: ?>
             <tr>
-                <td colspan="8" align="center">Không có lô hàng nào trong kho!</td>
+                <td colspan="9" align="center">Không có lô hàng nào trong kho!</td>
             </tr>
         <?php endif; ?>
     </table>

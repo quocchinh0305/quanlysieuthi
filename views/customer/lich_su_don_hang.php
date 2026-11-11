@@ -41,10 +41,10 @@ if (session_status() === PHP_SESSION_NONE) {
                     <td><?= htmlspecialchars($row['trangthai_donhang']); ?></td>
                     <td>
                         <?php if ($row['trangthai_donhang'] == 'choxacnhan'): ?>
-                            <a href="/quanlysieuthi/controller/ThanhToanController.php?action=huy_don&id=<?= $row['id']; ?>" 
+                            <a href="/quanlysieuthi/controller/customer/ThanhToanController.php?action=huy_don&id=<?= $row['id']; ?>" 
                                onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">Hủy đơn</a>
                         <?php else: ?>
-                            <a href="/quanlysieuthi/controller/ThanhToanController.php?action=mua_lai&id=<?= $row['id']; ?>">Mua lại</a>
+                            <a href="/quanlysieuthi/controller/customer/ThanhToanController.php?action=mua_lai&id=<?= $row['id']; ?>">Mua lại</a>
                         <?php endif; ?>
                     </td>
                 </tr>

@@ -3,8 +3,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once "../config/database.php";
-require_once __DIR__ . "/../models/BanHangModel.php";
+require_once __DIR__ . "/../../config/database.php";
+require_once __DIR__ . "/../../models/staff/BanHangModel.php";
 
 class BanHangController {
     private $conn;
@@ -30,7 +30,7 @@ class BanHangController {
                 break;
             case 'xoagio':
                 unset($_SESSION['gio_hang_pos']);
-             header("Location: /quanlysieuthi/controller/BanHangController.php");
+             header("Location: /quanlysieuthi/controller/staff/BanHangController.php");
                 exit();
             default:
                 $this->trangChu();
@@ -42,7 +42,7 @@ class BanHangController {
         $ket_qua = $this->banHangModel->getDanhSachSanPham();
         $gio_hang_pos = isset($_SESSION['gio_hang_pos']) ? $_SESSION['gio_hang_pos'] : [];
         
-        require_once "../views/staff/ban_hang.php";
+        require_once __DIR__ . "/../../views/staff/ban_hang.php";
     }
 
     public function lichSuBanHang() {
@@ -59,7 +59,7 @@ class BanHangController {
 
         $thong_ke = $this->banHangModel->getThongKeBanHangHomNay($nhanVien['id']);
         $lich_su_ban_hang = $this->banHangModel->getLichSuBanHang($nhanVien['id']);
-        require_once "../views/staff/lich_su_ban_hang.php";
+        require_once __DIR__ . "/../../views/staff/lich_su_ban_hang.php";
     }
 
     public function themSanPham() {

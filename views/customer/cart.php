@@ -53,7 +53,7 @@ $tong_tien = 0;
 
         <?php if (!empty($cart)): ?>
 
-            <form action="/quanlysieuthi/controller/CartController.php?action=update" method="POST">
+            <form action="/quanlysieuthi/controller/customer/CartController.php?action=update" method="POST">
 
                 <table border="1" cellpadding="10" cellspacing="0">
                     <thead>
@@ -109,7 +109,7 @@ $tong_tien = 0;
 
                                 <td>
                                     <a
-                                        href="/quanlysieuthi/controller/CartController.php?action=delete&id=<?= urlencode($id); ?>"
+                                        href="/quanlysieuthi/controller/customer/CartController.php?action=delete&id=<?= urlencode($id); ?>"
                                         onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?');"
                                     >
                                         Xóa
@@ -158,7 +158,7 @@ $tong_tien = 0;
                     </strong>
                 </p>
 
-                <a href="/quanlysieuthi/controller/ThanhToanController.php?action=form_thanh_toan">
+                <a href="/quanlysieuthi/controller/customer/ThanhToanController.php?action=form_thanh_toan">
                     <button type="button">
                         TIẾN HÀNH ĐẶT HÀNG
                     </button>
